@@ -3861,14 +3861,14 @@ MonoBehaviour:
   m_visualObjects:
   - {fileID: 1042378005}
   m_player: {fileID: 1396115874}
-  m_crowds:
+  m_crowd:
   - {fileID: 1086819551}
   - {fileID: 1317274648}
   - {fileID: 965831495}
   - {fileID: 2119806751}
   - {fileID: 1183265254}
   - {fileID: 909442365}
-  m_crowdsMoveSpeed: 1
+  m_crowdMoveSpeed: 1
 --- !u!1 &2074424970
 GameObject:
   m_ObjectHideFlags: 0

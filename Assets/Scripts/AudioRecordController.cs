@@ -20,9 +20,9 @@ public class AudioRecordController : MonoBehaviour
     public Transform[] m_visualObjects;
 
     public GameObject m_player;
-    public GameObject[] m_crowds;
-    public float m_crowdsMoveSpeed = 1.0f;
-    private Vector3[] m_crowdsTarget;
+    public GameObject[] m_crowd;
+    public float m_crowdMoveSpeed = 1.0f;
+    private Vector3[] m_crowdTarget;
 
     private string m_inputDevice;
 
@@ -50,7 +50,7 @@ public class AudioRecordController : MonoBehaviour
         m_audioSource.Play();
         m_clipSampleData = new float[m_sampleDataLength];
 
-        m_crowdsTarget = new Vector3[m_crowds.Length];
+        m_crowdTarget = new Vector3[m_crowd.Length];
     }
 
     // Update is called once per frame
@@ -84,11 +84,11 @@ public class AudioRecordController : MonoBehaviour
                 if (m_clipLoudness > 10.0f)
                     crowdsMoveDir = 1;
 
-                for (var idx = 0; idx < m_crowds.Length; idx++)
+                for (var idx = 0; idx < m_crowd.Length; idx++)
                 {
-                    Vector3 dir = m_crowds[idx].transform.position - m_player.transform.position;
+                    Vector3 dir = (m_crowd[idx].transform.position - m_player.transform.position) * crowdsMoveDir;
                     dir.Normalize();
-                    m_crowdsTarget[idx] = m_crowds[idx].transform.position + dir * crowdsMoveDir * m_crowdsMoveSpeed * m_updateStep;
+                    m_crowdTarget[idx] = m_crowd[idx].transform.position + dir * m_crowdMoveSpeed * m_updateStep;
                 }
             }
 
@@ -99,9 +99,9 @@ public class AudioRecordController : MonoBehaviour
                 obj.localScale = new Vector3(1, m_currentScale, 1);
             }
 
-            for (var idx = 0; idx < m_crowds.Length; idx++)
+            for (var idx = 0; idx < m_crowd.Length; idx++)
             {
-                m_crowds[idx].transform.position = Vector3.MoveTowards(m_crowds[idx].transform.position, m_crowdsTarget[idx], m_updateStep);
+                m_crowd[idx].transform.position = Vector3.MoveTowards(m_crowd[idx].transform.position, m_crowdTarget[idx], m_updateStep);
             }
         }
     }
