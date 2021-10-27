@@ -1,6 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioRecordController : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class AudioRecordController : MonoBehaviour
     public float m_currentScale = 1.0f;
 
     public Transform[] m_visualObjects;
+    public Text m_audioVolumeNum;
 
     public GameObject m_player;
     public GameObject[] m_crowd;
@@ -72,7 +74,8 @@ public class AudioRecordController : MonoBehaviour
 
                 // m_clipLoudness /= m_sampleDataLength;
 
-                m_clipLoudness = m_clipLoudness / 10.0f;
+                m_clipLoudness = m_clipLoudness * (m_useAudio ? 0.1f : 10.0f);
+                m_audioVolumeNum.text = string.Format("Audio input device {0},\nloudness {1}.", m_inputDevice, m_clipLoudness);
                 //Debug.Log("Voice loundness " + m_clipLoudness);
 
                 if (m_clipLoudness > 20.0f)
