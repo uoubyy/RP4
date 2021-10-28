@@ -74,7 +74,7 @@ public class AudioRecordController : MonoBehaviour
 
                 // m_clipLoudness /= m_sampleDataLength;
 
-                m_clipLoudness = m_clipLoudness * (m_useAudio ? 0.1f : 10.0f);
+                m_clipLoudness = m_clipLoudness * (m_useAudio ? 0.01f : 100.0f);
                 m_audioVolumeNum.text = string.Format("Audio input device {0},\nloudness {1}.", m_inputDevice, m_clipLoudness);
                 //Debug.Log("Voice loundness " + m_clipLoudness);
 
