@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // must be attached to objects which have Camera component
-[RequireComponent(typeof(Camera))]
+[RequireComponent(typeof(Camera)), ExecuteInEditMode]
 public class CustomImageEffect : MonoBehaviour
 {
     [SerializeField]
