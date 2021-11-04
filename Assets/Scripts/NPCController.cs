@@ -41,7 +41,7 @@ public class NPCController : MonoBehaviour
         m_navMeshAgent.destination = m_targetObject.position - dir * m_minRadius;
         m_tergetDirection = dir;
         m_currentDirection = transform.forward;
-        m_navMeshAgent.speed = 1.0f;
+        m_navMeshAgent.speed = 0.8f;
     }
 
 
@@ -50,7 +50,7 @@ public class NPCController : MonoBehaviour
         Vector3 newDest = m_targetObject.position - m_currentDirection * Random.Range(m_minRadius, m_maxRadius);
         newDest.y = 0.0f;
         m_navMeshAgent.destination = newDest;
-        m_navMeshAgent.speed = 0.8f;
+        m_navMeshAgent.speed = 1.1f;
     }
 
     private void Update()

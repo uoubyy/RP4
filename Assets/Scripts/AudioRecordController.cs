@@ -91,25 +91,34 @@ public class AudioRecordController : MonoBehaviour
                     clipLoudness += Mathf.Abs(sample);
                 }
 
+                clipLoudness = clipLoudness * 1000.0f;
+
                 // m_clipLoudness /= m_sampleDataLength;
 
                 // after an interval, calculate similarity again
                 // similarity > 0.8 * 1.0f / m_updateStep move away
                 // CalculateRhythmSimilarity(clipLoudness);
 
+                float percent = Mathf.InverseLerp(0.0f, 5.0f, clipLoudness / 1000.0f);
                 m_audioVolumeNum.text = string.Format("Audio input device {0}\nloudness {1}\nsimilarity{2}", m_inputDevice, clipLoudness, m_rhythmSimilarity);
                 //m_audioVolumeNum.text = string.Format("Loudness {0}", clipLoudness);
 
-                clipLoudness = Mathf.Clamp(clipLoudness, 0.0f, 5000.0f);
-                float k = (8.0f - 0.5f) / 4000;
-                float b = 8 - k * 5000.0f;
-
-                if (clipLoudness > 1000.0f)
-                    m_targetScale = k * clipLoudness + b;
+/*                if (clipLoudness <= 300.0f)
+                {
+                    clipLoudness = (int)(clipLoudness / 100.0f);
+                }
                 else
-                    m_targetScale = 0.5f;
+                {
+                    float temp = clipLoudness - 200.0f;
+                    float k = 3.1415926f / 2.0f / 300.0f;
 
-                bool moveOut = (clipLoudness >= 2000.0f);
+                    clipLoudness = Mathf.Sin(k * temp) * 7.0f + 3.0f;
+                }*/
+
+                m_targetScale = Mathf.Max((4.5f * percent + 0.5f) * 0.4f, 0.8f);
+                BreathIndicator.scale_target = percent;
+
+                bool moveOut = (clipLoudness >= 100.0f);
                 for (var idx = 0; idx < m_crowd.Length; idx++)
                 {
                     if (moveOut)
@@ -120,10 +129,10 @@ public class AudioRecordController : MonoBehaviour
             }
 
             float scaleSpeed = 0.0f;
-            m_currentScale = Mathf.SmoothDamp(m_currentScale, m_targetScale, ref scaleSpeed, m_updateStep);
+            m_currentScale = Mathf.SmoothDamp(m_currentScale, m_targetScale, ref scaleSpeed, m_updateStep * 2.0f);
             foreach (var obj in m_visualObjects) // update the real-time voice indicator
             {
-                obj.localScale = new Vector3(1, m_currentScale, 1);
+                obj.localScale = new Vector3(m_currentScale, m_currentScale, 1);
             }
         }
     }
