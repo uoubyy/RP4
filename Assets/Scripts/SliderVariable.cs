@@ -12,7 +12,7 @@ public class SliderVariable : MonoBehaviour
 
     public void start()
     {
-        NPCRadius = NPCRadius = ((int)RadiusSlider.value);
+        NPCRadius = ((int)RadiusSlider.value);
     }
 
     public void OnValueChanged()
@@ -26,23 +26,23 @@ public class SliderVariable : MonoBehaviour
         {
             if (NPCRadius == 1)
             {
-                status.text = "Very Calm";
+                status.text = "Player currently very calm";
             }
             else if (NPCRadius == 2)
             {
-                status.text = "Relaxed";
+                status.text = "Player currently relaxed";
             }
             else if (NPCRadius == 3)
             {
-                status.text = "Nervous";
+                status.text = "Player currently tense";
             }
             else if (NPCRadius == 4)
             {
-                status.text = "Anxious";
+                status.text = "Player currently anxious";
             }
             else if (NPCRadius == 5)
             {
-                status.text = "Overwhelmed";
+                status.text = "Player currently overwhelmed";
             }
         }
         

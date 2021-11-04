@@ -64,7 +64,7 @@ public class AudioRecordController : MonoBehaviour
 
     void CalculateRhythmSimilarity(float loudness)
     {
-        int state = m_breathIndictor.GetBreathState();
+        int state = m_breathIndictor.GetBreathState(); //1 speaking
         if ((state == 1 && loudness >= m_breathThreshold) ||
         (state == -1 && loudness < m_breathThreshold))
             m_rhythmSimilarity += 1;
@@ -97,18 +97,22 @@ public class AudioRecordController : MonoBehaviour
 
                 // after an interval, calculate similarity again
                 // similarity > 0.8 * 1.0f / m_updateStep move away
-                CalculateRhythmSimilarity(clipLoudness);
+                // CalculateRhythmSimilarity(clipLoudness);
 
-                m_audioVolumeNum.text = string.Format("Audio input device {0}\nloudness {1}\nsimilarity{2}", m_inputDevice, clipLoudness, m_rhythmSimilarity);
+                //m_audioVolumeNum.text = string.Format("Audio input device {0}\nloudness {1}\nsimilarity{2}", m_inputDevice, clipLoudness, m_rhythmSimilarity);
+                m_audioVolumeNum.text = string.Format("Loudness {0}", clipLoudness);
 
+                
                 if (clipLoudness > m_breathThreshold)
                     m_targetScale = m_maxScale;
+
                 else
                     m_targetScale = m_minScale;
 
+                bool moveOut = (clipLoudness >= m_breathThreshold * 0.6f);
                 for (var idx = 0; idx < m_crowd.Length; idx++)
                 {
-                    if (m_rhythmSimilarity > 2.0f / m_updateStep * 0.6f)
+                    if (moveOut)
                         m_crowd[idx].MoveOutPlayer();
                     else
                         m_crowd[idx].MoveToPlayer();
