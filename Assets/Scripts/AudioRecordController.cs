@@ -17,7 +17,7 @@ public class AudioRecordController : MonoBehaviour
     public float m_minScale = 0.5f;
     public float m_maxScale = 8.0f;
 
-    public float m_breathThreshold = 20.0f;
+    public float m_breathThreshold = 800.0f;
 
     private float m_targetScale = 1.0f;
     private float m_currentScale = 1.0f;
@@ -93,23 +93,23 @@ public class AudioRecordController : MonoBehaviour
 
                 // m_clipLoudness /= m_sampleDataLength;
 
-                clipLoudness = clipLoudness * (m_useAudio ? m_testAudioVolume : 100.0f);
-
                 // after an interval, calculate similarity again
                 // similarity > 0.8 * 1.0f / m_updateStep move away
                 // CalculateRhythmSimilarity(clipLoudness);
 
-                //m_audioVolumeNum.text = string.Format("Audio input device {0}\nloudness {1}\nsimilarity{2}", m_inputDevice, clipLoudness, m_rhythmSimilarity);
-                m_audioVolumeNum.text = string.Format("Loudness {0}", clipLoudness);
+                m_audioVolumeNum.text = string.Format("Audio input device {0}\nloudness {1}\nsimilarity{2}", m_inputDevice, clipLoudness, m_rhythmSimilarity);
+                //m_audioVolumeNum.text = string.Format("Loudness {0}", clipLoudness);
 
-                
-                if (clipLoudness > m_breathThreshold)
-                    m_targetScale = m_maxScale;
+                clipLoudness = Mathf.Clamp(clipLoudness, 0.0f, 5000.0f);
+                float k = (8.0f - 0.5f) / 4000;
+                float b = 8 - k * 5000.0f;
 
+                if (clipLoudness > 1000.0f)
+                    m_targetScale = k * clipLoudness + b;
                 else
-                    m_targetScale = m_minScale;
+                    m_targetScale = 0.5f;
 
-                bool moveOut = (clipLoudness >= m_breathThreshold * 0.6f);
+                bool moveOut = (clipLoudness >= 2000.0f);
                 for (var idx = 0; idx < m_crowd.Length; idx++)
                 {
                     if (moveOut)
