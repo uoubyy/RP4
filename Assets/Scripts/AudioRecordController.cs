@@ -26,7 +26,7 @@ public class AudioRecordController : MonoBehaviour
     public Text m_audioVolumeNum;
 
     public GameObject m_player;
-    public Rigidbody[] m_crowd;
+    public NPCController[] m_crowd;
     public float m_crowdMoveSpeed = 1.0f;
     private Vector3[] m_crowdTarget;
 
@@ -108,9 +108,10 @@ public class AudioRecordController : MonoBehaviour
 
                 for (var idx = 0; idx < m_crowd.Length; idx++)
                 {
-                    Vector3 dir = (m_crowd[idx].transform.position - m_player.transform.position);//* (m_targetScale == m_minScale ? -1 : 1);
-                    dir.Normalize();
-                    m_crowdTarget[idx] = dir;//m_crowd[idx].transform.position + dir * m_crowdMoveSpeed * m_updateStep;
+                    if (m_rhythmSimilarity > 2.0f / m_updateStep * 0.6f)
+                        m_crowd[idx].MoveOutPlayer();
+                    else
+                        m_crowd[idx].MoveToPlayer();
                 }
             }
 
@@ -119,11 +120,6 @@ public class AudioRecordController : MonoBehaviour
             foreach (var obj in m_visualObjects) // update the real-time voice indicator
             {
                 obj.localScale = new Vector3(1, m_currentScale, 1);
-            }
-
-            for (var idx = 0; idx < m_crowd.Length; idx++)
-            {
-                m_crowd[idx].AddForce(m_crowdTarget[idx] * (m_rhythmSimilarity >= 0.8 * 2.0f / m_updateStep ? 1.0f : -1.0f) * 20);
             }
         }
     }
